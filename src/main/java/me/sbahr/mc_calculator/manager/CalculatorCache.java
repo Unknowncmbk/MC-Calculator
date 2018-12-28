@@ -15,6 +15,8 @@ public class CalculatorCache {
 	
 	public CalculatorCache(UUID owner){
 		this.owner = owner;
+		this.inputLeft = "";
+		this.inputRight = "";
 	}
 	
 	public final UUID getOwner(){

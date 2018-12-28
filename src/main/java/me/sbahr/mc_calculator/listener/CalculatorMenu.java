@@ -1,6 +1,7 @@
 package me.sbahr.mc_calculator.listener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 
 import me.sbahr.mc_calculator.manager.CalculatorCache;
 import me.sbahr.mc_calculator.manager.CalculatorManager;
+import me.sbahr.mc_calculator.manager.Operation;
 import me.sbahr.mc_calculator.util.ItemStackUtil;
 
 public class CalculatorMenu implements Listener {
@@ -172,15 +174,43 @@ public class CalculatorMenu implements Listener {
 				break;
 			case 14:
 				// handle divide button
+				
+				if (cache.getInputRight().isEmpty()){
+					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
+					return false;
+				}
+				
+				cache.setOperation(Operation.DIVIDE);
 				break;
 			case 23:
 				// handle multiply button
+				
+				if (cache.getInputRight().isEmpty()){
+					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
+					return false;
+				}
+				
+				cache.setOperation(Operation.MULTIPLY);
 				break;
 			case 32:
 				// handle subtract button
+				
+				if (cache.getInputRight().isEmpty()){
+					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
+					return false;
+				}
+				
+				cache.setOperation(Operation.SUBTRACT);
 				break;
 			case 41:
 				// handle add button
+				
+				if (cache.getInputRight().isEmpty()){
+					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
+					return false;
+				}
+				
+				cache.setOperation(Operation.ADD);
 				break;
 			case 34:
 				// handle result button
