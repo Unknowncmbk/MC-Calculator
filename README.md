@@ -12,7 +12,7 @@ To bring up the calculator GUI use the command in game:
 ```
 
 which would bring up this page:
-![alt text](https://github.com/Unknowncmbk/MC-Calculator/blob/master/images/calc_main_menu.png "Main Calculator")
+- ![alt text](https://github.com/Unknowncmbk/MC-Calculator/blob/master/images/calc_main_menu.png "Main Calculator")
 
 ## Design
 I designed a simple two number and an operation calculator, with the operations being ADD, SUBTRACT, MULTIPLY, DIVIDE. This was due to the limited time constraints and getting a viable, tested, working product as opposed to handling infinite computations all at once.
