@@ -37,6 +37,7 @@ public class CalculatorMenu implements Listener {
 	 * @param plugin - the owning plugin
 	 */
 	public CalculatorMenu(Plugin plugin) {
+		System.out.println("Constructing CalculatorMenu...");
 		this.plugin = plugin;
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -195,7 +196,7 @@ public class CalculatorMenu implements Listener {
 
 		Bukkit.getScheduler().runTaskLater(plugin, () -> {
 			
-			openMenu(p);;
+			openMenu(p);
 		}, 20L);
 	}
 	
@@ -264,19 +265,22 @@ public class CalculatorMenu implements Listener {
 		return gui;
 	}
 
-	public static class Controller implements Listener{
+	public static class Controller implements Listener {
 		
 		/** The owning plugin */
 		private final Plugin plugin;
 		/** The bound menu */
-		private CalculatorMenu menu;
+		private static CalculatorMenu menu;
 		
 		public Controller(Plugin plugin){
+			System.out.println("Constructing Controller for CalculatorMenu...");
 			this.plugin = plugin;
-			this.menu = new CalculatorMenu(plugin);
+			menu = new CalculatorMenu(plugin);
+			
+			plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		}
 		
-		public void openMenu(Player player){
+		public static void openMenu(Player player){
 			if (menu != null){
 				menu.openMenu(player);
 			}
