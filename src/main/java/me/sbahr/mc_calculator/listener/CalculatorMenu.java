@@ -222,36 +222,36 @@ public class CalculatorMenu implements Listener {
 		Inventory gui = Bukkit.getServer().createInventory(null, 9 * 6, TITLE);
 
 		// clear button
-		gui.setItem(0, ItemStackUtil.createItemStack(new ItemStack(Material.BARRIER, 1), "CLEAR", null));
+		gui.setItem(0, ItemStackUtil.createItemStack(new ItemStack(Material.BARRIER, 1), ChatColor.RED + "Clear", null));
 
 		// digits 7 - 9
-		gui.setItem(10, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 7), "7", null));
-		gui.setItem(11, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 8), "8", null));
-		gui.setItem(12, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 9), "9", null));
+		gui.setItem(10, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 7), ChatColor.GRAY + "7", null));
+		gui.setItem(11, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 8), ChatColor.GRAY + "8", null));
+		gui.setItem(12, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 9), ChatColor.GRAY + "9", null));
 
 		// digits 4-6
-		gui.setItem(19, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 4), "4", null));
-		gui.setItem(20, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 5), "5", null));
-		gui.setItem(21, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 6), "6", null));
+		gui.setItem(19, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 4), ChatColor.GRAY + "4", null));
+		gui.setItem(20, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 5), ChatColor.GRAY + "5", null));
+		gui.setItem(21, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 6), ChatColor.GRAY + "6", null));
 
 		// digits 1-3
-		gui.setItem(28, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 1), "1", null));
-		gui.setItem(29, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 2), "2", null));
-		gui.setItem(30, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 3), "3", null));
+		gui.setItem(28, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 1), ChatColor.GRAY + "1", null));
+		gui.setItem(29, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 2), ChatColor.GRAY + "2", null));
+		gui.setItem(30, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 3), ChatColor.GRAY + "3", null));
 
 		// digit 0
-		gui.setItem(37, ItemStackUtil.createItemStack(new ItemStack(Material.BUCKET, 1), "0", null));
+		gui.setItem(37, ItemStackUtil.createItemStack(new ItemStack(Material.BUCKET, 1), ChatColor.GRAY + "0", null));
 
 		// equal button
-		gui.setItem(39, ItemStackUtil.createItemStack(new ItemStack(Material.ANVIL, 1), "EQUALS", null));
+		gui.setItem(39, ItemStackUtil.createItemStack(new ItemStack(Material.ANVIL, 1), ChatColor.GREEN + "Equals", null));
 
 		// divide, multiply, subtract, add buttons
-		gui.setItem(14, ItemStackUtil.createItemStack(new ItemStack(Material.BLAZE_ROD, 1), "DIVIDE", null));
-		gui.setItem(23, ItemStackUtil.createItemStack(new ItemStack(Material.END_CRYSTAL, 1), "MULTIPLY", null));
-		gui.setItem(32, ItemStackUtil.createItemStack(new ItemStack(Material.IRON_HORSE_ARMOR, 1), "SUBTRACT", null));
-		gui.setItem(41, ItemStackUtil.createItemStack(new ItemStack(Material.ARMOR_STAND, 1), "ADD", null));
+		gui.setItem(14, ItemStackUtil.createItemStack(new ItemStack(Material.BLAZE_ROD, 1), ChatColor.YELLOW + "Divide", null));
+		gui.setItem(23, ItemStackUtil.createItemStack(new ItemStack(Material.END_CRYSTAL, 1), ChatColor.YELLOW + "Multiply", null));
+		gui.setItem(32, ItemStackUtil.createItemStack(new ItemStack(Material.IRON_HORSE_ARMOR, 1), ChatColor.YELLOW + "Subtract", null));
+		gui.setItem(41, ItemStackUtil.createItemStack(new ItemStack(Material.ARMOR_STAND, 1), ChatColor.YELLOW + "Add", null));
 
-		String resultName = "RESULT";
+		String resultName = ChatColor.GREEN + "Result";
 		List<String> resultLore = new ArrayList<>();
 
 		// if "EQUALS" was pushed, there is a final operation line
