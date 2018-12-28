@@ -121,8 +121,8 @@ public class CalculatorMenu implements Listener {
 		CalculatorCache cache = CalculatorManager.getInstance().getPlayerCache(player.getUniqueId()).orElse(null);
 		
 		if (cache == null){
-			// TODO debug remove
-			Bukkit.broadcastMessage("No cache found for player=" + player.getName());
+			player.sendMessage(ChatColor.RED + "Unable to locate player calculator cache!");
+			return true;
 		}
 		
 		// grab raw slot so we know the button
@@ -158,61 +158,48 @@ public class CalculatorMenu implements Listener {
 				if (cache.getOperation() == null){
 					cache.setInputLeft(cache.getInputLeft() + digit);
 					
-					// TODO debug remove
-					Bukkit.broadcastMessage("leftInput=" + cache.getInputLeft());
+					player.sendMessage(ChatColor.GRAY + cache.getInputLeft());
 				}
 				else{
 					cache.setInputRight(cache.getInputRight() + digit);
 					
-					// TODO debug remove
-					Bukkit.broadcastMessage("rightInput=" + cache.getInputRight());
+					player.sendMessage(ChatColor.GRAY + cache.getInputRight());
 				}
 				break;
 			case 39:
 				// handle equal button
 				
-				// TODO debug remove
-				Bukkit.broadcastMessage("Equals: " + cache.calculate());
+				player.sendMessage("" + ChatColor.GREEN + ChatColor.BOLD + "Equals: " + ChatColor.WHITE + cache.calculate());
 				break;
 			case 14:
-				// handle divide button
-				
-				if (cache.getInputLeft().isEmpty()){
-					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
-					return false;
-				}
-				
-				cache.setOperation(Operation.DIVIDE);
-				break;
 			case 23:
-				// handle multiply button
-				
-				if (cache.getInputLeft().isEmpty()){
-					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
-					return false;
-				}
-				
-				cache.setOperation(Operation.MULTIPLY);
-				break;
 			case 32:
-				// handle subtract button
-				
-				if (cache.getInputLeft().isEmpty()){
-					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
-					return false;
-				}
-				
-				cache.setOperation(Operation.SUBTRACT);
-				break;
 			case 41:
-				// handle add button
+				// handle operations buttons
 				
 				if (cache.getInputLeft().isEmpty()){
 					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
 					return false;
 				}
 				
-				cache.setOperation(Operation.ADD);
+				player.sendMessage("" + ChatColor.YELLOW + ChatColor.BOLD + cache.getInputLeft());
+				
+				if (rawSlot == 14){
+					cache.setOperation(Operation.DIVIDE);
+					player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "DIVIDED BY");
+				}
+				else if (rawSlot == 23){
+					cache.setOperation(Operation.MULTIPLY);
+					player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "TIMES");
+				}
+				else if (rawSlot == 32){
+					cache.setOperation(Operation.SUBTRACT);
+					player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "MINUS");
+				}
+				else if (rawSlot == 41){
+					cache.setOperation(Operation.ADD);
+					player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "PLUS");
+				}
 				break;
 			case 34:
 				// handle result button
