@@ -53,7 +53,7 @@ public class CalculatorCache {
 				left = Integer.parseInt(this.inputLeft);
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 
@@ -63,7 +63,7 @@ public class CalculatorCache {
 				right = Integer.parseInt(this.inputRight);
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 
@@ -73,12 +73,15 @@ public class CalculatorCache {
 				case ADD:
 					setFinalOperation(left + " + " + right);
 					answer = left + right;
+					break;
 				case SUBTRACT:
 					setFinalOperation(left + " - " + right);
 					answer = left - right;
+					break;
 				case MULTIPLY:
 					setFinalOperation(left + " * " + right);
 					answer = left * right;
+					break;
 				case DIVIDE:
 
 					// cannot divide by 0
@@ -89,6 +92,7 @@ public class CalculatorCache {
 
 					setFinalOperation(left + " / " + right);
 					answer = (double) left / right;
+					break;
 			}
 		}
 
