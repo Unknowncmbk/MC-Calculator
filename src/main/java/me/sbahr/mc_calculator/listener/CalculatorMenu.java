@@ -145,9 +145,14 @@ public class CalculatorMenu implements Listener {
 			case 28:
 			case 29:
 			case 30:
+			case 37:
 				
-				// handle 1-9
+				// handle 0-9
 				int digit = event.getCurrentItem().getAmount();
+				
+				if (rawSlot == 37){
+					digit = 0;
+				}
 				
 				// if operation is not specified, add to left input
 				if (cache.getOperation() == null){
@@ -162,9 +167,6 @@ public class CalculatorMenu implements Listener {
 					// TODO debug remove
 					Bukkit.broadcastMessage("rightInput=" + cache.getInputRight());
 				}
-				break;
-			case 37:
-				// handle 0 button
 				break;
 			case 39:
 				// handle equal button
