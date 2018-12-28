@@ -128,9 +128,11 @@ public class CalculatorMenu implements Listener {
 		
 		switch (rawSlot){
 			case 0:
+				
 				// handle clear button
 				cache.setInputLeft("");
 				cache.setInputRight("");
+				cache.setOperation(null);
 				break;
 			case 10:
 			case 11:
@@ -141,13 +143,32 @@ public class CalculatorMenu implements Listener {
 			case 28:
 			case 29:
 			case 30:
+				
 				// handle 1-9
+				int digit = event.getCurrentItem().getAmount();
+				
+				// if operation is not specified, add to left input
+				if (cache.getOperation() == null){
+					cache.setInputLeft(cache.getInputLeft() + digit);
+					
+					// TODO debug remove
+					Bukkit.broadcastMessage("leftInput=" + cache.getInputLeft());
+				}
+				else{
+					cache.setInputRight(cache.getInputRight() + digit);
+					
+					// TODO debug remove
+					Bukkit.broadcastMessage("rightInput=" + cache.getInputRight());
+				}
 				break;
 			case 37:
 				// handle 0 button
 				break;
 			case 39:
 				// handle equal button
+				
+				// TODO debug remove
+				Bukkit.broadcastMessage("Equals: " + cache.calculate());
 				break;
 			case 14:
 				// handle divide button

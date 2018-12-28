@@ -10,6 +10,8 @@ public class CalculatorCache {
 	private String inputLeft;
 	/** The right input */
 	private String inputRight;
+	/** The operation to do with the inputs */
+	private Operation operation;
 	
 	public CalculatorCache(UUID owner){
 		this.owner = owner;
@@ -33,5 +35,55 @@ public class CalculatorCache {
 
 	public void setInputRight(String inputRight) {
 		this.inputRight = inputRight;
+	}
+
+	public Operation getOperation() {
+		return operation;
+	}
+
+	public void setOperation(Operation operation) {
+		this.operation = operation;
+	}
+	
+	public double calculate(){
+		
+		int left = 0;
+		int right = 0;
+		
+		// convert left input to int
+		if (this.inputLeft != null){
+			try{
+				left = Integer.parseInt(this.inputLeft);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		// convert right input to int
+		if (this.inputRight != null){
+			try{
+				right = Integer.parseInt(this.inputRight);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		if (this.operation != null){
+			
+			switch (this.operation){
+				case ADD:
+					return left + right;
+				case SUBTRACT:
+					return left - right;
+				case MULTIPLY:
+					return left * right;
+				case DIVIDE:
+					return left / right;
+			}
+		}
+		
+		return 0;
 	}
 }
