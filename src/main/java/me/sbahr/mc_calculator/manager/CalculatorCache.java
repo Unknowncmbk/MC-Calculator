@@ -10,6 +10,10 @@ public class CalculatorCache {
 	private String inputLeft;
 	/** The right input */
 	private String inputRight;
+	/** The calculated final answer */
+	private double finalAnswer;
+	/** The final operation string */
+	private String finalOperation;
 	/** The operation to do with the inputs */
 	private Operation operation;
 	
@@ -17,6 +21,8 @@ public class CalculatorCache {
 		this.owner = owner;
 		this.inputLeft = "";
 		this.inputRight = "";
+		this.finalAnswer = 0;
+		this.finalOperation = "";
 	}
 	
 	public final UUID getOwner(){
@@ -38,6 +44,22 @@ public class CalculatorCache {
 	public void setInputRight(String inputRight) {
 		this.inputRight = inputRight;
 	}
+	
+	public double getFinalAnswer() {
+		return finalAnswer;
+	}
+
+	public void setFinalAnswer(double finalAnswer) {
+		this.finalAnswer = finalAnswer;
+	}
+
+	public String getFinalOperation() {
+		return finalOperation;
+	}
+
+	public void setFinalOperation(String finalOperation) {
+		this.finalOperation = finalOperation;
+	}
 
 	public Operation getOperation() {
 		return operation;
@@ -51,6 +73,7 @@ public class CalculatorCache {
 		
 		int left = 0;
 		int right = 0;
+		double answer = 0;
 		
 		// convert left input to int
 		if (this.inputLeft != null){
@@ -76,22 +99,30 @@ public class CalculatorCache {
 			
 			switch (this.operation){
 				case ADD:
-					return left + right;
+					setFinalOperation(left + " + " + right);
+					answer = left + right;
 				case SUBTRACT:
-					return left - right;
+					setFinalOperation(left + " - " + right);
+					answer = left - right;
 				case MULTIPLY:
-					return left * right;
+					setFinalOperation(left + " * " + right);
+					answer = left * right;
 				case DIVIDE:
 					
 					// cannot divide by 0
 					if (right == 0){
-						return 0;
+						setFinalOperation("CANNOT DIVIDE BY ZERO");
+						answer = 0;
 					}
 					
-					return (double) left / right;
+					setFinalOperation(left + " / " + right);
+					answer = (double) left / right;
 			}
 		}
 		
-		return 0;
+		// set the final calculated answer
+		setFinalAnswer(answer);
+		
+		return answer;
 	}
 }

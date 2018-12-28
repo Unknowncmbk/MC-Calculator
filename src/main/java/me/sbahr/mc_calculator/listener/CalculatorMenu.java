@@ -166,15 +166,6 @@ public class CalculatorMenu implements Listener {
 					player.sendMessage(ChatColor.GRAY + cache.getInputRight());
 				}
 				break;
-			case 39:
-				// handle equal button
-				
-				if (!cache.getInputRight().isEmpty()){
-					player.sendMessage("" + ChatColor.YELLOW + ChatColor.BOLD + cache.getInputRight());
-				}
-				
-				player.sendMessage("" + ChatColor.GREEN + ChatColor.BOLD + "Equals: " + ChatColor.WHITE + cache.calculate());
-				break;
 			case 14:
 			case 23:
 			case 32:
@@ -204,6 +195,17 @@ public class CalculatorMenu implements Listener {
 					cache.setOperation(Operation.ADD);
 					player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "PLUS");
 				}
+				break;
+			case 39:
+				// handle equal button
+				
+				if (!cache.getInputRight().isEmpty()){
+					player.sendMessage("" + ChatColor.YELLOW + ChatColor.BOLD + cache.getInputRight());
+				}
+				
+				player.sendMessage("" + ChatColor.GREEN + ChatColor.BOLD + "Equals: " + ChatColor.WHITE + cache.calculate());
+				
+				
 				break;
 			case 34:
 				// handle result button
