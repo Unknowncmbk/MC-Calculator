@@ -82,7 +82,13 @@ public class CalculatorCache {
 				case MULTIPLY:
 					return left * right;
 				case DIVIDE:
-					return left / right;
+					
+					// cannot divide by 0
+					if (right == 0){
+						return 0;
+					}
+					
+					return (double) left / right;
 			}
 		}
 		

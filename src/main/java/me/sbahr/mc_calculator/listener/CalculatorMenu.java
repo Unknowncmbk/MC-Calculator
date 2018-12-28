@@ -175,7 +175,7 @@ public class CalculatorMenu implements Listener {
 			case 14:
 				// handle divide button
 				
-				if (cache.getInputRight().isEmpty()){
+				if (cache.getInputLeft().isEmpty()){
 					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
 					return false;
 				}
@@ -185,7 +185,7 @@ public class CalculatorMenu implements Listener {
 			case 23:
 				// handle multiply button
 				
-				if (cache.getInputRight().isEmpty()){
+				if (cache.getInputLeft().isEmpty()){
 					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
 					return false;
 				}
@@ -195,7 +195,7 @@ public class CalculatorMenu implements Listener {
 			case 32:
 				// handle subtract button
 				
-				if (cache.getInputRight().isEmpty()){
+				if (cache.getInputLeft().isEmpty()){
 					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
 					return false;
 				}
@@ -205,7 +205,7 @@ public class CalculatorMenu implements Listener {
 			case 41:
 				// handle add button
 				
-				if (cache.getInputRight().isEmpty()){
+				if (cache.getInputLeft().isEmpty()){
 					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
 					return false;
 				}
@@ -223,8 +223,11 @@ public class CalculatorMenu implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		final Player p = event.getPlayer();
+		
+		CalculatorManager.getInstance().addPlayerCache(p.getUniqueId());
 
 		Bukkit.getScheduler().runTaskLater(plugin, () -> {
+			
 			Inventory inven = constructInventory(p);
 			p.openInventory(inven);
 		}, 20L);
