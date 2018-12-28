@@ -8,22 +8,34 @@ import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.sbahr.mc_calculator.command.CalculatorCommand;
+import me.sbahr.mc_calculator.listener.CalculatorListener;
 import me.sbahr.mc_calculator.listener.CalculatorMenu;
+import me.sbahr.mc_calculator.manager.CalculatorManager;
 
 public class Calculator extends JavaPlugin {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onEnable(){
 		
 		// register command
 		registerCommand(new CalculatorCommand(), "calculator");
 		
+		// register listeners
+		new CalculatorListener(this);
 		new CalculatorMenu.Controller(this);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onDisable(){
 		
+		// clean up all caches
+		CalculatorManager.getInstance().clearAllCaches();
 	}
 	
 	/**

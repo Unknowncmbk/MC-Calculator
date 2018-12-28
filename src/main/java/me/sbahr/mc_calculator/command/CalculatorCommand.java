@@ -2,6 +2,7 @@ package me.sbahr.mc_calculator.command;
 
 import java.util.Arrays;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
@@ -27,6 +28,7 @@ public class CalculatorCommand extends BukkitCommand {
 			Player player = (Player) sender;
 			
 			// open the calculator for this player
+			player.sendMessage(ChatColor.GREEN + "Opening calculator...");
 			CalculatorMenu.Controller.openMenu(player);
 		}
 		

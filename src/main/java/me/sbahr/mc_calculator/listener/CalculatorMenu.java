@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -37,49 +36,64 @@ public class CalculatorMenu implements Listener {
 	 * @param plugin - the owning plugin
 	 */
 	public CalculatorMenu(Plugin plugin) {
-		System.out.println("Constructing CalculatorMenu...");
+		System.out.println("Registering CalculatorMenu handler...");
 		this.plugin = plugin;
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
-	
-	public void openMenu(Player player){
-		
+
+	/**
+	 * Opens the menu for the given player.
+	 * 
+	 * @param player - the player requesting the calculator menu
+	 */
+	public void openMenu(Player player) {
+
 		// grab their cached calculator
 		CalculatorCache cache = CalculatorManager.getInstance().getPlayerCache(player.getUniqueId()).orElse(null);
-		
-		if (cache != null){
+
+		if (cache != null) {
 			Inventory gui = constructInventory(player, cache);
+			player.openInventory(gui);
 		}
 	}
 
+	/**
+	 * Listens in on inventory click events.
+	 * <p>
+	 * This method sure that the inventory that is being clicked is related to
+	 * this menu.
+	 * </p>
+	 * 
+	 * @param event - the event
+	 */
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		
+
 		// grab event variables
 		Inventory inven = event.getClickedInventory();
 		HumanEntity he = event.getWhoClicked();
-		
-		if (he instanceof Player){
+
+		if (he instanceof Player) {
 			Player player = (Player) he;
-			
+
 			// if this menu
 			if (inven.getTitle() != null && inven.getTitle().equalsIgnoreCase(TITLE)) {
 				event.setCancelled(true);
-				
+
 				// handle valid clicks
-				if (event.isLeftClick() || event.isRightClick() || event.isShiftClick()){
-					
+				if (event.isLeftClick() || event.isRightClick() || event.isShiftClick()) {
+
 					// make sure they are clicking something
-					if (event.getCurrentItem() != null){
-						
+					if (event.getCurrentItem() != null) {
+
 						// make sure it's in the top slot inventory
-						if (event.getRawSlot() < inven.getSize()){
-							
+						if (event.getRawSlot() < inven.getSize()) {
+
 							// handle the clicking of a button
 							boolean close = handleCalculatorClick(event, player);
-							
-							if (close){
+
+							if (close) {
 								player.closeInventory();
 							}
 						}
@@ -89,23 +103,32 @@ public class CalculatorMenu implements Listener {
 		}
 	}
 
+	/**
+	 * Handles the clicking of the calculator buttons.
+	 * 
+	 * @param event - the inventory click event
+	 * @param player - the player clicking
+	 * 
+	 * @return {@code true} if we handled the click and should close the menu,
+	 *         {@code false} otherwise.
+	 */
 	private boolean handleCalculatorClick(InventoryClickEvent event, Player player) {
-		
+
 		// grab the calc cache for the player
 		CalculatorCache cache = CalculatorManager.getInstance().getPlayerCache(player.getUniqueId()).orElse(null);
-		
-		if (cache == null){
+
+		if (cache == null) {
 			player.sendMessage(ChatColor.RED + "Unable to locate player calculator cache!");
 			return true;
 		}
-		
+
 		// grab raw slot so we know the button
 		int rawSlot = event.getRawSlot();
-		
-		switch (rawSlot){
+
+		switch (rawSlot) {
 			case 0:
-				
 				// handle clear button
+				
 				cache.clearCache();
 				break;
 			case 10:
@@ -118,23 +141,24 @@ public class CalculatorMenu implements Listener {
 			case 29:
 			case 30:
 			case 37:
+				// handle 0-9 buttosn
 				
-				// handle 0-9
+				// grab the digit pressed
 				int digit = event.getCurrentItem().getAmount();
-				
-				if (rawSlot == 37){
+
+				if (rawSlot == 37) {
 					digit = 0;
 				}
-				
+
 				// if operation is not specified, add to left input
-				if (cache.getOperation() == null){
+				if (cache.getOperation() == null) {
 					cache.setInputLeft(cache.getInputLeft() + digit);
-					
+
 					player.sendMessage(ChatColor.GRAY + cache.getInputLeft());
 				}
-				else{
+				else {
 					cache.setInputRight(cache.getInputRight() + digit);
-					
+
 					player.sendMessage(ChatColor.GRAY + cache.getInputRight());
 				}
 				break;
@@ -143,63 +167,48 @@ public class CalculatorMenu implements Listener {
 			case 32:
 			case 41:
 				// handle operations buttons
-				
-				if (cache.getInputLeft().isEmpty()){
+
+				if (cache.getInputLeft().isEmpty()) {
 					player.sendMessage(ChatColor.RED + "Please input a number before using operations!");
 					return false;
 				}
-				
+
 				player.sendMessage("" + ChatColor.YELLOW + ChatColor.BOLD + cache.getInputLeft());
-				
-				if (rawSlot == 14){
+
+				if (rawSlot == 14) {
 					cache.setOperation(Operation.DIVIDE);
 					player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "DIVIDED BY");
 				}
-				else if (rawSlot == 23){
+				else if (rawSlot == 23) {
 					cache.setOperation(Operation.MULTIPLY);
 					player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "TIMES");
 				}
-				else if (rawSlot == 32){
+				else if (rawSlot == 32) {
 					cache.setOperation(Operation.SUBTRACT);
 					player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "MINUS");
 				}
-				else if (rawSlot == 41){
+				else if (rawSlot == 41) {
 					cache.setOperation(Operation.ADD);
 					player.sendMessage("" + ChatColor.GOLD + ChatColor.BOLD + "PLUS");
 				}
 				break;
 			case 39:
 				// handle equal button
-				
-				if (!cache.getInputRight().isEmpty()){
+
+				if (!cache.getInputRight().isEmpty()) {
 					player.sendMessage("" + ChatColor.YELLOW + ChatColor.BOLD + cache.getInputRight());
 				}
-				
+
 				player.sendMessage("" + ChatColor.GREEN + ChatColor.BOLD + "Equals: " + ChatColor.WHITE + cache.calculate());
-				
+
 				// reopen menu
 				openMenu(player);
 				break;
-			case 34:
-				// handle result button
-				break;
 		}
-		
+
 		return false;
 	}
 
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		final Player p = event.getPlayer();
-		
-		CalculatorManager.getInstance().addPlayerCache(p.getUniqueId());
-
-		Bukkit.getScheduler().runTaskLater(plugin, () -> {
-			
-			openMenu(p);
-		}, 20L);
-	}
-	
 	/**
 	 * Creates the inventory gui representation for the player.
 	 * 
@@ -244,13 +253,13 @@ public class CalculatorMenu implements Listener {
 
 		String resultName = "RESULT";
 		List<String> resultLore = new ArrayList<>();
-		
+
 		// if "EQUALS" was pushed, there is a final operation line
-		if (!cache.getFinalOperation().isEmpty()){
+		if (!cache.getFinalOperation().isEmpty()) {
 			resultName = "" + ChatColor.GREEN + ChatColor.BOLD + cache.getFinalAnswer();
 			resultLore.add(ChatColor.GRAY + cache.getFinalOperation());
 		}
-		
+
 		// result button
 		gui.setItem(34, ItemStackUtil.createItemStack(new ItemStack(Material.CRAFTING_TABLE, 1), resultName, resultLore));
 
@@ -265,23 +274,27 @@ public class CalculatorMenu implements Listener {
 		return gui;
 	}
 
-	public static class Controller implements Listener {
-		
-		/** The owning plugin */
-		private final Plugin plugin;
+	public static class Controller {
+
 		/** The bound menu */
 		private static CalculatorMenu menu;
-		
-		public Controller(Plugin plugin){
-			System.out.println("Constructing Controller for CalculatorMenu...");
-			this.plugin = plugin;
+
+		/**
+		 * Create a new controller for static access to this menu.
+		 * 
+		 * @param plugin - the owning plugin
+		 */
+		public Controller(Plugin plugin) {
 			menu = new CalculatorMenu(plugin);
-			
-			plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		}
-		
-		public static void openMenu(Player player){
-			if (menu != null){
+
+		/**
+		 * Open the calculator menu for the given player.
+		 * 
+		 * @param player - the player requesting the menu
+		 */
+		public static void openMenu(Player player) {
+			if (menu != null) {
 				menu.openMenu(player);
 			}
 		}
