@@ -110,6 +110,7 @@ public class CalculatorCache {
 		this.inputRight = "";
 		this.finalAnswer = 0;
 		this.finalOperation = "";
+		this.operation = null;
 	}
 
 	/**
