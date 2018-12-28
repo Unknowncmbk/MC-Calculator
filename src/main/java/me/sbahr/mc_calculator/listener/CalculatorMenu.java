@@ -169,6 +169,10 @@ public class CalculatorMenu implements Listener {
 			case 39:
 				// handle equal button
 				
+				if (!cache.getInputRight().isEmpty()){
+					player.sendMessage("" + ChatColor.YELLOW + ChatColor.BOLD + cache.getInputRight());
+				}
+				
 				player.sendMessage("" + ChatColor.GREEN + ChatColor.BOLD + "Equals: " + ChatColor.WHITE + cache.calculate());
 				break;
 			case 14:
