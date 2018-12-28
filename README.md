@@ -10,6 +10,8 @@ To bring up the calculator GUI use the command in game:
 ```
 /calc
 ```
+which would bring up this page:
+
 
 ## Design
 I designed a simple two number and an operation calculator, with the operations being ADD, SUBTRACT, MULTIPLY, DIVIDE. This was due to the limited time constraints and getting a viable, tested, working product as opposed to handling infinite computations all at once.
