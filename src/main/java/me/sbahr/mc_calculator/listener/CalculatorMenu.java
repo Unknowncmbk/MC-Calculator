@@ -1,5 +1,8 @@
 package me.sbahr.mc_calculator.listener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,58 +28,28 @@ public class CalculatorMenu implements Listener {
 	/** The owning plugin */
 	private Plugin plugin;
 
+	/**
+	 * Create a new CalculatorMenu.
+	 * <p>
+	 * This handles the click logic of the buttons of the calculator.
+	 * </p>
+	 * 
+	 * @param plugin - the owning plugin
+	 */
 	public CalculatorMenu(Plugin plugin) {
 		this.plugin = plugin;
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
-
-	private Inventory constructInventory(Player player) {
-
-		Inventory gui = Bukkit.getServer().createInventory(null, 9 * 6, TITLE);
-
-		// clear button
-		gui.setItem(0, ItemStackUtil.createItemStack(new ItemStack(Material.BARRIER, 1), "CLEAR", null));
-
-		// digits 7 - 9
-		gui.setItem(10, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 7), "7", null));
-		gui.setItem(11, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 8), "8", null));
-		gui.setItem(12, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 9), "9", null));
-
-		// digits 4-6
-		gui.setItem(19, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 4), "4", null));
-		gui.setItem(20, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 5), "5", null));
-		gui.setItem(21, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 6), "6", null));
-
-		// digits 1-3
-		gui.setItem(28, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 1), "1", null));
-		gui.setItem(29, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 2), "2", null));
-		gui.setItem(30, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 3), "3", null));
-
-		// digit 0
-		gui.setItem(37, ItemStackUtil.createItemStack(new ItemStack(Material.BUCKET, 1), "0", null));
-
-		// equal button
-		gui.setItem(39, ItemStackUtil.createItemStack(new ItemStack(Material.ANVIL, 1), "EQUALS", null));
-
-		// divide, multiply, subtract, add buttons
-		gui.setItem(14, ItemStackUtil.createItemStack(new ItemStack(Material.BLAZE_ROD, 1), "DIVIDE", null));
-		gui.setItem(23, ItemStackUtil.createItemStack(new ItemStack(Material.END_CRYSTAL, 1), "MULTIPLY", null));
-		gui.setItem(32, ItemStackUtil.createItemStack(new ItemStack(Material.IRON_HORSE_ARMOR, 1), "SUBTRACT", null));
-		gui.setItem(41, ItemStackUtil.createItemStack(new ItemStack(Material.ARMOR_STAND, 1), "ADD", null));
-
-		// result button
-		gui.setItem(34, ItemStackUtil.createItemStack(new ItemStack(Material.CRAFTING_TABLE, 1), "RESULT", null));
-
-		// fill reset in with glass
-		for (int i = 0; i < gui.getSize(); i++) {
-			ItemStack is = gui.getItem(i);
-			if (is == null) {
-				gui.setItem(i, ItemStackUtil.createItemStack(new ItemStack(Material.GRAY_STAINED_GLASS_PANE, 1), "", null));
-			}
+	
+	public void openMenu(Player player){
+		
+		// grab their cached calculator
+		CalculatorCache cache = CalculatorManager.getInstance().getPlayerCache(player.getUniqueId()).orElse(null);
+		
+		if (cache != null){
+			Inventory gui = constructInventory(player, cache);
 		}
-
-		return gui;
 	}
 
 	@EventHandler
@@ -132,9 +105,7 @@ public class CalculatorMenu implements Listener {
 			case 0:
 				
 				// handle clear button
-				cache.setInputLeft("");
-				cache.setInputRight("");
-				cache.setOperation(null);
+				cache.clearCache();
 				break;
 			case 10:
 			case 11:
@@ -223,9 +194,91 @@ public class CalculatorMenu implements Listener {
 
 		Bukkit.getScheduler().runTaskLater(plugin, () -> {
 			
-			Inventory inven = constructInventory(p);
-			p.openInventory(inven);
+			openMenu(p);;
 		}, 20L);
 	}
+	
+	/**
+	 * Creates the inventory gui representation for the player.
+	 * 
+	 * @param player - the player requesting the gui
+	 * @param cache - the calculator cache for this player
+	 * 
+	 * @return The built inventory gui for the player.
+	 */
+	private Inventory constructInventory(Player player, CalculatorCache cache) {
 
+		Inventory gui = Bukkit.getServer().createInventory(null, 9 * 6, TITLE);
+
+		// clear button
+		gui.setItem(0, ItemStackUtil.createItemStack(new ItemStack(Material.BARRIER, 1), "CLEAR", null));
+
+		// digits 7 - 9
+		gui.setItem(10, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 7), "7", null));
+		gui.setItem(11, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 8), "8", null));
+		gui.setItem(12, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 9), "9", null));
+
+		// digits 4-6
+		gui.setItem(19, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 4), "4", null));
+		gui.setItem(20, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 5), "5", null));
+		gui.setItem(21, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 6), "6", null));
+
+		// digits 1-3
+		gui.setItem(28, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 1), "1", null));
+		gui.setItem(29, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 2), "2", null));
+		gui.setItem(30, ItemStackUtil.createItemStack(new ItemStack(Material.WHITE_CONCRETE, 3), "3", null));
+
+		// digit 0
+		gui.setItem(37, ItemStackUtil.createItemStack(new ItemStack(Material.BUCKET, 1), "0", null));
+
+		// equal button
+		gui.setItem(39, ItemStackUtil.createItemStack(new ItemStack(Material.ANVIL, 1), "EQUALS", null));
+
+		// divide, multiply, subtract, add buttons
+		gui.setItem(14, ItemStackUtil.createItemStack(new ItemStack(Material.BLAZE_ROD, 1), "DIVIDE", null));
+		gui.setItem(23, ItemStackUtil.createItemStack(new ItemStack(Material.END_CRYSTAL, 1), "MULTIPLY", null));
+		gui.setItem(32, ItemStackUtil.createItemStack(new ItemStack(Material.IRON_HORSE_ARMOR, 1), "SUBTRACT", null));
+		gui.setItem(41, ItemStackUtil.createItemStack(new ItemStack(Material.ARMOR_STAND, 1), "ADD", null));
+
+		String resultName = "RESULT";
+		List<String> resultLore = new ArrayList<>();
+		
+		// if "EQUALS" was pushed, there is a final operation line
+		if (!cache.getFinalOperation().isEmpty()){
+			resultName = "" + ChatColor.GREEN + ChatColor.BOLD + cache.getFinalAnswer();
+			resultLore.add(ChatColor.GRAY + cache.getFinalOperation());
+		}
+		
+		// result button
+		gui.setItem(34, ItemStackUtil.createItemStack(new ItemStack(Material.CRAFTING_TABLE, 1), resultName, resultLore));
+
+		// fill reset in with glass
+		for (int i = 0; i < gui.getSize(); i++) {
+			ItemStack is = gui.getItem(i);
+			if (is == null) {
+				gui.setItem(i, ItemStackUtil.createItemStack(new ItemStack(Material.GRAY_STAINED_GLASS_PANE, 1), " ", null));
+			}
+		}
+
+		return gui;
+	}
+
+	public static class Controller implements Listener{
+		
+		/** The owning plugin */
+		private final Plugin plugin;
+		/** The bound menu */
+		private CalculatorMenu menu;
+		
+		public Controller(Plugin plugin){
+			this.plugin = plugin;
+			this.menu = new CalculatorMenu(plugin);
+		}
+		
+		public void openMenu(Player player){
+			if (menu != null){
+				menu.openMenu(player);
+			}
+		}
+	}
 }

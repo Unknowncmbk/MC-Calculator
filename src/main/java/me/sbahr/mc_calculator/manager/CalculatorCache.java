@@ -25,6 +25,16 @@ public class CalculatorCache {
 		this.finalOperation = "";
 	}
 	
+	/**
+	 * Clears the calculator cache.
+	 */
+	public void clearCache(){
+		this.inputLeft = "";
+		this.inputRight = "";
+		this.finalAnswer = 0;
+		this.finalOperation = "";
+	}
+	
 	public final UUID getOwner(){
 		return owner;
 	}

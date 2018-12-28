@@ -9,6 +9,7 @@ public class Calculator extends JavaPlugin {
 	@Override
 	public void onEnable(){
 		new CalculatorMenu(this);
+		new CalculatorMenu.Controller(this);
 	}
 	
 	@Override
