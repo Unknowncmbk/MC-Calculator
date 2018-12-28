@@ -6,6 +6,11 @@ The overview was simple, build a calculator. No other requirements were given.
 
 I opted for a inventory GUI calculator as it's more useful to see the calculator and operate with the results as items that are clickable, instead of typing commands.
 
+To bring up the calculator GUI use the command in game:
+```
+/calc
+```
+
 ## Design
 I designed a simple two number and an operation calculator, with the operations being ADD, SUBTRACT, MULTIPLY, DIVIDE. This was due to the limited time constraints and getting a viable, tested, working product as opposed to handling infinite computations all at once.
 
