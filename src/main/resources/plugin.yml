@@ -1,0 +1,4 @@
+name: MC-Calculator
+version: 0.1
+main: me.sbahr.mc_calculator.Calculator
+api-version: 1.13
