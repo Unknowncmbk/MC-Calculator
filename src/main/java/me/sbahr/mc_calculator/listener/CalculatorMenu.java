@@ -78,7 +78,7 @@ public class CalculatorMenu implements Listener {
 			Player player = (Player) he;
 
 			// if this menu
-			if (inven.getTitle() != null && inven.getTitle().equalsIgnoreCase(TITLE)) {
+			if (inven != null && inven.getTitle() != null && inven.getTitle().equalsIgnoreCase(TITLE)) {
 				event.setCancelled(true);
 
 				// handle valid clicks
